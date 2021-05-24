@@ -84,6 +84,21 @@ STR \"([^\\\"]|\\.)*\"
 "species"       { LOC(); return TOK_SPECIES; }
 "observables"   { LOC(); return TOK_OBSERVABLES; }
 "actions"       { LOC(); return TOK_ACTIONS; }
+"functions"     { LOC(); return TOK_FUNCTIONS; }
+  
+  /* Stuff to add down the line */
+
+  /* "groups"     { LOC(); return TOK_GROUPS; } */
+  /* "reactions"     { LOC(); return TOK_REACTIONS; } */
+  /* "actions"     { LOC(); return TOK_ACTIONS; } */
+
+  /* energy patterns */
+  /* "energy"     { LOC(); return TOK_ENERGY; } */
+  /* "patterns"     { LOC(); return TOK_PATTERNS; } */
+
+  /* population maps */
+  /* "population"     { LOC(); return TOK_POPULATION; } */
+  /* "maps"     { LOC(); return TOK_MAPS; } */
 
 "!CPLX" 		{ LOC(); return TOK_SINGLE_CPLX; }
 

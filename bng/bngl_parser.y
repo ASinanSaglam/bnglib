@@ -118,6 +118,17 @@ namespace BNG {
 %token TOK_SPECIES "species"
 %token TOK_OBSERVABLES "observables"
 %token TOK_ACTIONS "actions"
+%token TOK_FUNCTIONS "functions"
+
+/* Stuff to add down the line */
+
+/* %token TOK_GROUPS "groups" */
+/* %token TOK_REACTIONS "reactions" */
+/* %token TOK_ACTIONS "actions" */
+/* %token TOK_ENERGY "energy" */
+/* %token TOK_PATTERNS "patterns" */
+/* %token TOK_POPULATION "population" */
+/* %token TOK_MAPS "maps" */
 
 // special token to switch parser to mode where it parses a single complex
 %token TOK_SINGLE_CPLX "!CPLX"
@@ -224,6 +235,7 @@ section:
     | TOK_BEGIN TOK_SEED TOK_SPECIES nls seed_species_list_maybe_empty TOK_END TOK_SEED TOK_SPECIES
     | TOK_BEGIN TOK_SPECIES nls seed_species_list_maybe_empty TOK_END TOK_SPECIES
     | TOK_BEGIN TOK_OBSERVABLES nls observables_list_maybe_empty TOK_END TOK_OBSERVABLES
+    | TOK_BEGIN TOK_FUNCTIONS nls functions_list_maybe_empty TOK_END TOK_FUNCTIONS
     | TOK_BEGIN TOK_ACTIONS nls action_call_list_maybe_empty TOK_END TOK_ACTIONS
     | action_call    
 ;
@@ -450,6 +462,7 @@ cplx:
         $2->compartment = $1;
         $$ = $2;
       }
+;
 
 compartment_for_cplx_maybe_empty:
       '@' TOK_ID ':' {
@@ -569,6 +582,34 @@ cplx_list:
     | cplx {
     	$$ = g_ctx->new_list_node()->append($1);
       }
+;
+
+// ---------------- functions ------------------
+
+functions_list_maybe_empty:
+      functions_list
+      | /* empty */ 
+;
+
+functions_list:
+      functions_list function_item
+      | function_item
+;
+
+function_item:
+      TOK_ID function_args_in_parens_maybe_empty expr nls
+      | TOK_ID function_args_in_parens_maybe_empty '=' expr nls
+;
+
+function_args_in_parens_maybe_empty:
+      "(" function_arg_list_maybe_empty ")"
+      | /* empty */
+;  
+
+function_arg_list_maybe_empty:
+      function_arg_list
+      | /* empty */
+;
       
 // ---------------- action calls ------------------
 // ignored for now
@@ -585,6 +626,7 @@ action_call_list:
 
 action_call:
       TOK_ID '(' arg_list_maybe_empty ')' maybe_semicolon
+;
 
 arg_list_maybe_empty:
       '{' action_arg_list '}'
